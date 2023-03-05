@@ -73,6 +73,48 @@ resource "aws_route_table_association" "public-rt-assoc" {
   route_table_id      = aws_route_table.public.id
 }
 
+resource "aws_eip" "ngw-eip" {
+  vpc         = true
+}
+
+resource "aws_nat_gateway" "ngw" {
+  allocation_id = aws_eip.ngw-eip.id
+  subnet_id     = aws_subnet.public.*.id[0]
+
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-ngw"}
+  )
+
+#  depends_on = [aws_internet_gateway.]
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+
+  route {
+    cidr_block                = data.aws_vpc.default.cidr_block
+    vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
+  }
+
+  route {
+    cidr_block                = "0.0.0.0/0"
+    nat_gateway_id            = aws_nat_gateway.ngw.id
+  }
+
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-private-route-table"}
+  )
+}
+
+resource "aws_route_table_association" "private-rt-assoc" {
+  count               = length(aws_subnet.private)
+  subnet_id           = aws_subnet.private.*.id[count.index]
+  route_table_id      = aws_route_table.private.id
+}
+
 // create EC2
 
 #data "aws_ami" "centos8" {
