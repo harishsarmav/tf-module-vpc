@@ -37,7 +37,7 @@ resource "aws_route" "default" {
 resource "aws_route" "igw-route" {
   route_table_id            = aws_vpc.main.default_route_table_id
   destination_cidr_block    = "0.0.0.0/0"
-  gateway_id                = "aws_internet_gateway.igw.id"
+  gateway_id                = aws_internet_gateway.igw.id
 }
 
 resource "aws_route" "default-vpc" {
