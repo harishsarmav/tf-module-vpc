@@ -47,4 +47,3 @@ resource "aws_route" "r" {
   destination_cidr_block    = var.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
 }
-}
