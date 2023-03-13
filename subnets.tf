@@ -10,7 +10,7 @@ module "subnets" {
   for_each                    = var.subnets
   cidr_block                  = each.value.cidr_block
   name                        = each.value.name
-#  internet_gw                 = lookup(each.value, "internet_gw", false)
+  internet_gw                 = each.value.internet_gw ? aws_internet_gateway.gw.id : null
 #  nat_gw                      = lookup(each.value, "nat_gw", false)
 
 #  Local resources which are created
