@@ -8,5 +8,5 @@ output "vpc_peering_connection_id" {
 
 
 output "public_subnet_id" {
-  value = module.public_subnets.subnet_ids
+  value = lookup(lookup(module.public_subnets, "public", null), "subnet_ids", null)[0]
 }

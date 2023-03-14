@@ -6,11 +6,11 @@ module "public_subnets" {
   availability_zone = var.availability_zone
 
   ##  For each
-  for_each    = var.oublic_submets
+  for_each    = var.public_subnets
   cidr_block  = each.value.cidr_block
   name        = each.value.name
   internet_gw = lookup(each.value, "internet_gw", false)
-  #    nat_gw                      = lookup(each.value, "nat_gw", false)
+  #  nat_gw                      = lookup(each.value, "nat_gw", false)
 
   ##  Local resources which are created
   vpc_id                    = aws_vpc.main.id
