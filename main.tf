@@ -37,8 +37,8 @@ resource "aws__eip" "ngw_eip" {
 }
 
 resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.ngw-eip.id
-  subnet_id     = var.public_subnet_ids[0]
+  allocation_id = aws_eip.ngw_eip.id
+  subnet_id     = lookup(lookup(module.public_subnets, "public", null), "subnet_ids", null)[0]
 
   tags = merge(
     local.common_tags,
