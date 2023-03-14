@@ -28,6 +28,22 @@ resource "aws_internet_gateway" "gw" {
 
   tags = merge(
     local.common_tags,
-    { Name = "${var.env}-igw" }
+    { Name = "${var.env}-igw"}
   )
 }
+
+resource "aws__eip" "ngw_eip" {
+  vpc = true
+}
+
+resource "aws_nat_gateway" "ngw" {
+  allocation_id = aws_eip.ngw-eip.id
+  subnet_id     = var.public_subnet_ids[0]
+
+  tags = merge(
+    local.common_tags,
+    { Name = "${var.env}-ngw"}
+  )
+}
+
+
