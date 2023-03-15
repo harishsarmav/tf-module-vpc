@@ -32,7 +32,7 @@ resource "aws_internet_gateway" "gw" {
   )
 }
 
-resource "aws__eip" "ngw_eip" {
+resource "aws_eip" "ngw_eip" {
   vpc = true
 }
 
