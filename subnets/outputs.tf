@@ -1,4 +1,4 @@
-output "subnet_ids" {
+output "subnet_id" {
   value = aws_subnet.main.*.id
 }
 
